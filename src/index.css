@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Rancho&display=swap');
+
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+@theme{
+  --color-ash-100: #F4F3F0;
+  --color-peach-200: #D2B48C;
+  --font-raleway: Raleway, sans-serif;
+  --font-rancho: Rancho, cursive
+}
