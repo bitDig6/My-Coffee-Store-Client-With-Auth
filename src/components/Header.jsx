@@ -35,6 +35,7 @@ const Header = () => {
                 </ul>
             </div>
             <div className="navbar-end space-x-3">
+                <Link to="/signIn" className="btn rounded-full">Sign in</Link>
             </div>
         </div>
     );
