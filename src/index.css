@@ -11,3 +11,21 @@
   --font-raleway: Raleway, sans-serif;
   --font-rancho: Rancho, cursive
 }
+
+.header-bg{
+  background-image: url(./assets/images/more/7.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.home-bg{
+  background-image: url(./assets/images/more/1.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+}
+
+.active{
+  color: gold;
+  text-decoration: underline;
+}
