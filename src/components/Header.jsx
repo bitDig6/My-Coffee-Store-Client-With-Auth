@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, NavLink } from 'react-router';
 import logo from '../assets/images/more/logo1.png';
+import { AuthContext } from '../contexts/AuthContext';
 
 const Header = () => {
+    const {user, setUser, signOutUser} = useContext(AuthContext);
+
     const menus = <>
         <NavLink to='/'>Home</NavLink>
         <NavLink to='/addCoffee'>Add Coffee</NavLink>
     </>
 
+    const handleSignOut = () => {
+        signOutUser()
+            .then( () => {
+                console.log('successfully signed out');
+                setUser(null);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
 
     return (
         <div className="navbar  text-white shadow-sm px-5 header-bg">
@@ -35,7 +47,11 @@ const Header = () => {
                 </ul>
             </div>
             <div className="navbar-end space-x-3">
-                <Link to="/signIn" className="btn rounded-full">Sign in</Link>
+               {
+                user? 
+                <p>{user?.displayName} <button className='btn' onClick={handleSignOut}>Sign Out</button></p>
+                :  <Link to="/signIn" className="btn rounded-full">Sign in</Link>
+               }
             </div>
         </div>
     );
