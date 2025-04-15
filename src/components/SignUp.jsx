@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { AuthContext } from '../contexts/AuthContext';
 
 const SignUp = () => {
-    const { createUser, updateUserProfile } = useContext(AuthContext);
+    const { createUser, signInUserWithGoogle, updateUserProfile } = useContext(AuthContext);
 
     const handleSignUp = (event) => {
         event.preventDefault();
@@ -14,22 +14,50 @@ const SignUp = () => {
         const name = form.name.value;
         const photo = form.photo.value;
 
-        const newUserInfo = { 
+        const newUser = { email, name, photo };
+
+        const newUserInfo = {
             displayName: name,
             photoURL: photo
-         }
+        }
 
         createUser(email, password)
             .then(userCredential => {
-                console.log(userCredential);
+                console.log(userCredential.user);
+                // setUser(userCredential.user);
+                newUser.createdAt = userCredential?.user?.metadata?.creationTime;
                 updateUserProfile(newUserInfo)
-                    .then(() => {
-                        console.log('profile updated');
-                    }).catch(error => {
-                        console.log(error.code, error.message);
+                .then(() => {
+                    console.log('added user name and photo url');
+                    //save user data to database
+                    fetch('http://localhost:5000/users', {
+                        method: 'POST',
+                        headers: {
+                            "content-type": "application/json"
+                        },
+                        body: JSON.stringify(newUser)
                     })
+                        .then(res => res.json())
+                        .then( data => {
+                            console.log(data);
+                        }).catch(error => {
+                            console.log(error);
+                        })                  
+                }).catch( error => {
+                    console.log(error);
+                })
+                
             }).catch(error => {
                 console.log(error.code, error.message);
+            })
+    }
+
+    const handleSignUpWithGoogle = () => {
+        signInUserWithGoogle()
+            .then(res => {
+                console.log(res);
+            }).catch(error => {
+                console.log(error);
             })
     }
 
@@ -43,7 +71,7 @@ const SignUp = () => {
 
                     <label className="fieldset-label text-black text-xl font-semibold">Photo URL</label>
                     <input type="text" name='photo' className="w-full input" placeholder="Photo URL" />
-                    
+
                     <label className="fieldset-label text-black text-xl font-semibold">Email</label>
                     <input type="email" name='email' className="w-full input" placeholder="Email" />
 
@@ -53,6 +81,8 @@ const SignUp = () => {
                     <button className="btn btn-neutral mt-4">Sign Up</button>
                 </form>
                 <p className='text-black text-center'>Already have an account? <Link className='link link-hover' to='/signIn'>Sign In</Link></p>
+                <div className="divider divider-neutral text-black font-semibold">OR</div>
+                <button onClick={handleSignUpWithGoogle} className="btn btn-neutral mt-4">Sign Up with Google</button>
             </div>
         </div>
     );

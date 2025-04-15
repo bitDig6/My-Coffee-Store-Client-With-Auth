@@ -9,7 +9,6 @@ const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
 
     const handleDelete = (_id) => {
         console.log(_id);
-
         Swal.fire({
             title: "Are you sure to delete this item?",
             text: "You won't be able to revert this!",

@@ -7,8 +7,9 @@ const Header = () => {
     const {user, setUser, signOutUser} = useContext(AuthContext);
 
     const menus = <>
-        <NavLink to='/'>Home</NavLink>
-        <NavLink to='/addCoffee'>Add Coffee</NavLink>
+        <li><NavLink to='/'>Home</NavLink></li>
+        <li><NavLink to='/addCoffee'>Add Coffee</NavLink></li>
+        <li><NavLink to='/users'>Users</NavLink></li>
     </>
 
     const handleSignOut = () => {

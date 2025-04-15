@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { AuthContext } from '../contexts/AuthContext';
 
 const SignIn = () => {
-    const { signInUser } = useContext(AuthContext);
+    const { signInUser, signInUserWithGoogle } = useContext(AuthContext);
 
     const handleSignIn = (event) => {
         event.preventDefault();
@@ -15,10 +15,39 @@ const SignIn = () => {
         signInUser(email, password)
             .then( userCredentials => {
                 console.log(userCredentials.user);
+
+                //update last login time
+                const lastSignInTime = userCredentials?.user?.metadata?.
+                lastSignInTime;
+                const loginInfo = { email, lastSignInTime};
+                
+                fetch(`http://localhost:5000/users/`, {
+                    method: 'PATCH',
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify(loginInfo)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log('sign info updated in db', data);
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                
             }).catch(error => {
                 console.log(error.code, error.message);
             })
     }
+
+    const handleSignInWithGoogle = () => {
+        signInUserWithGoogle()
+            .then(res => {
+                console.log(res);
+            }).catch(error => {
+                console.log(error);
+            })
+        }
 
     return (
         <div className='w-full min-h-dvh form-bg p-20'>
@@ -35,6 +64,8 @@ const SignIn = () => {
                     <button className="btn btn-neutral mt-4">Sign In</button>
                 </form>
                 <p className='text-black text-center'>Don't have an account? <Link className='link link-hover' to='/signUp'>Sign Up</Link></p>
+                <div className="divider divider-neutral text-black font-semibold">OR</div>
+                <button onClick={handleSignInWithGoogle} className="btn btn-neutral mt-4">Sign In with Google</button>
             </div>
         </div>
     );
