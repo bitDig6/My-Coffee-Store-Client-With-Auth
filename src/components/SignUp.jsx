@@ -30,7 +30,7 @@ const SignUp = () => {
                 .then(() => {
                     console.log('added user name and photo url');
                     //save user data to database
-                    fetch('http://localhost:5000/users', {
+                    fetch('https://my-coffee-store-server-gold.vercel.app/users', {
                         method: 'POST',
                         headers: {
                             "content-type": "application/json"
